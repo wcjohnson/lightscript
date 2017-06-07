@@ -13,3 +13,6 @@
 [submodule "babel-preset-lightscript"]
 	path = babel-preset-lightscript
 	url = https://github.com/wcjohnson/babel-preset-lightscript
+[submodule "ast-loc-utils"]
+	path = ast-loc-utils
+	url = https://github.com/wcjohnson/ast-loc-utils.git
