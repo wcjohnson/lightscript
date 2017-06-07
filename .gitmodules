@@ -1,15 +1,15 @@
-[submodule "packages/babel-plugin-lightscript"]
+[submodule "babel-plugin-lightscript"]
 	path = babel-plugin-lightscript
 	url = https://github.com/lightscript/babel-plugin-lightscript.git
-[submodule "packages/babylon-lightscript"]
+[submodule "babylon-lightscript"]
 	path = babylon-lightscript
 	url = https://github.com/lightscript/babylon-lightscript.git
-[submodule "packages/lightscript-eslint"]
+[submodule "lightscript-eslint"]
 	path = lightscript-eslint
 	url = https://github.com/lightscript/lightscript-eslint.git
-[submodule "packages/lightscript.org"]
+[submodule "lightscript.org"]
 	path = lightscript.org
 	url = https://github.com/lightscript/lightscript.org
-[submodule "packages/babel-preset-lightscript"]
+[submodule "babel-preset-lightscript"]
 	path = babel-preset-lightscript
 	url = https://github.com/lightscript/babel-preset-lightscript
