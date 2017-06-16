@@ -16,3 +16,6 @@
 [submodule "ast-loc-utils"]
 	path = ast-loc-utils
 	url = https://github.com/wcjohnson/ast-loc-utils.git
+[submodule "lightscript-runtime"]
+	path = lightscript-runtime
+	url = https://github.com/wcjohnson/lightscript-runtime.git
