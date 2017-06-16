@@ -19,6 +19,7 @@
     "self-link": "./scripts/selfLink.js babel-plugin-lightscript babel-preset-lightscript",
     "clean": "lerna clean --yes",
     "test": "lerna run test",
-    "release": "node ./scripts/release.js"
+    "release": "node ./scripts/release.js",
+    "release-core-packages": "node ./scripts/releasePackages.js @oigroup/babylon-lightscript @oigroup/babel-plugin-lightscript @oigroup/babel-preset-lightscript"
   }
 }

@@ -4,6 +4,7 @@
     "babel-plugin-lightscript",
     "babel-preset-lightscript",
     "babylon-lightscript",
+    "lightscript-runtime",
     "lightscript-eslint",
     "lightscript.org"
   ],
