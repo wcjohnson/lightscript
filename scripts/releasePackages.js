@@ -1,4 +1,4 @@
-const { run, lernaScopedCommand, lernaScopedCapture } = require('./run')
+const { run, runArgs, lernaScopedCommand, lernaScopedCapture } = require('./run')
 const path = require('path')
 
 // check that we're not running through `yarn`,
@@ -43,5 +43,11 @@ lernaScopedCommand(packages, `exec -- git push && git push --tags`)
 
 // commit & push version bump at monorepo level
 run(`git add ${packageDirs.join(' ')}`)
-run(`git commit -m Publish`)
+
+commitArgs = ['commit', '-m', 'Publish', '-m', 'Publish to NPM:']
+versionedPackages.forEach(info => {
+  commitArgs.push('-m', `* ${info.package} v${info.version}`)
+})
+runArgs('git', commitArgs)
+
 run(`git push`)

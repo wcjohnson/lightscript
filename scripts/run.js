@@ -14,6 +14,14 @@ const run = (str, opts = {}) => {
 module.exports = run;
 module.exports.run = run;
 
+const runArgs = (cmd, args, opts = {}) => {
+  joined = cmd + (args || []).join(' ')
+  console.log(chalk.white.bgBlack(joined))
+  const { status } = spawnSync(cmd, args, Object.assign({}, opts, { stdio: 'inherit' }))
+  if (status !== 0) process.exit()
+}
+module.exports.runArgs = runArgs
+
 const capture = (str) => {
   console.log(chalk.white.bgBlack(str))
   const [cmd, ...args] = str.split(' ')
