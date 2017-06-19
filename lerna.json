@@ -6,7 +6,9 @@
     "babylon-lightscript",
     "lightscript-runtime",
     "lightscript-eslint",
-    "lightscript.org"
+    "lightscript.org",
+    "ast-loc-utils",
+    "playground"
   ],
   "version": "independent"
 }

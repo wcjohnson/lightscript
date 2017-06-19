@@ -1,0 +1,25 @@
+{
+  "parser": "@oigroup/lightscript-eslint",
+  "plugins":[
+    "react"
+  ],
+  "rules": {
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "no-unexpected-multiline": 0,
+    "no-extra-semi": 0
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "mocha": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ]
+}

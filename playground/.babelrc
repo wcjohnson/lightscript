@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "@oigroup/babel-preset-lightscript",
+      {
+        "existential": true,
+        "safeCall": true,
+        "bangCall": true,
+        "enhancedComprehension": true,
+        "noEnforcedSubscriptIndentation": true,
+        "flippedImports": true
+      }
+    ]
+  ]
+}
