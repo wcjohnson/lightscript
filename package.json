@@ -20,6 +20,7 @@
     "clean": "lerna clean --yes",
     "test": "lerna run test",
     "release": "node ./scripts/release.js",
-    "release-core-packages": "node ./scripts/releasePackages.js @oigroup/babylon-lightscript @oigroup/babel-plugin-lightscript @oigroup/babel-preset-lightscript"
+    "release-core-packages": "node ./scripts/releasePackages.js @oigroup/babylon-lightscript @oigroup/babel-plugin-lightscript @oigroup/babel-preset-lightscript",
+    "release-suite": "node ./scripts/releasePackages.js @oigroup/babylon-lightscript @oigroup/babel-plugin-lightscript @oigroup/babel-preset-lightscript @oigroup/lightscript-eslint"
   }
 }
