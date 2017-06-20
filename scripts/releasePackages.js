@@ -13,12 +13,19 @@ try {
 const packages = process.argv.slice(2)
 
 const packageDirs = packages.map(package => {
-  abs = lernaScopedCapture([package], 'exec -- pwd').trim()
+  const abs = lernaScopedCapture([package], 'exec -- pwd').trim()
   return path.relative(path.join(__dirname, '..'), abs)
 })
 console.log(packageDirs)
 
 // health check
+packages.forEach(package => {
+  const status = lernaScopedCapture([package], 'exec -- git status --porcelain').trim()
+  if (status.length > 0) {
+    throw new Error(`Package ${package} has a dirty repository.`)
+  }
+});
+
 lernaScopedCommand(packages, `exec -- git pull`)
 lernaScopedCommand(packages, `run preversion`)
 
