@@ -6,7 +6,6 @@
     "babylon-lightscript",
     "lightscript-runtime",
     "lightscript-eslint",
-    "lightscript.org",
     "ast-loc-utils",
     "playground"
   ],
