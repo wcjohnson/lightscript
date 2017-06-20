@@ -58,8 +58,8 @@ inquirer.prompt([{type: 'confirm', default: false, name: 'go', message: 'Proceed
   // read version numbers and push git tags
   packages.forEach(package => {
     package.version = lernaScopedCapture([package.name], 'exec -- cat package.json | sed -nE "s/.*\\"version\\": ?\\"(.*)\\".*/\\1/p"').trim()
-    lernaScopedCommand([package.name], `exec -- git commit -am v${package.version}`)
-    lernaScopedCommand([package.name], `exec -- git tag v${package.version} -m v${package.version}`)
+    lernaScopedCommand([package.name], `exec -- git commit -am ${package.name}@${package.version}`)
+    lernaScopedCommand([package.name], `exec -- git tag ${package.name}@${package.version} -m ${package.name}@${package.version}`)
   })
 
   //////////////////////// Publish and push tags
