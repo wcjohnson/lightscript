@@ -9,7 +9,7 @@
 	url = https://github.com/wcjohnson/lightscript-eslint.git
 [submodule "lightscript.org"]
 	path = lightscript.org
-	url = https://github.com/lightscript/lightscript.org
+	url = https://github.com/wcjohnson/lightscript.org.git
 [submodule "babel-preset-lightscript"]
 	path = babel-preset-lightscript
 	url = https://github.com/wcjohnson/babel-preset-lightscript
