@@ -19,3 +19,6 @@
 [submodule "lightscript-runtime"]
 	path = lightscript-runtime
 	url = https://github.com/wcjohnson/lightscript-runtime.git
+[submodule "lightscript-tooling-tests"]
+	path = lightscript-tooling-tests
+	url = https://github.com/wcjohnson/lightscript-tooling-tests.git
