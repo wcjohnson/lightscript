@@ -132,6 +132,11 @@ for const k in obj {
 
 This change was made to `for`/`of` loops in 3.0, leaving `for`/`in` loops as an odd-man-out for no apparent reason. Implicit const should work the same way for all `for` loops now.
 
+## Miscellaneous
+
+- `eslint@4.8.0` is now a `peerDependency` of `lightscript-eslint`. This works around newer versions of ESLint requiring a babel 7 toolchain. (https://github.com/wcjohnson/lightscript/issues/67)
+- Bug fixes (https://github.com/wcjohnson/lightscript/issues/70, https://github.com/wcjohnson/lightscript/issues/74)
+
 # 3.0
 
 >This is a major release with breaking changes. This release is no longer strictly backward compatible with `lightscript@0.5.9`. Where compatibility has been broken, we believe we are correctly anticipating the future development of JavaScript and LightScript.
