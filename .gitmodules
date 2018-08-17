@@ -22,3 +22,6 @@
 [submodule "lightscript-tooling-tests"]
 	path = lightscript-tooling-tests
 	url = https://github.com/wcjohnson/lightscript-tooling-tests.git
+[submodule "lightscript-parser"]
+	path = lightscript-parser
+	url = https://github.com/wcjohnson/lightscript-parser.git
