@@ -25,3 +25,6 @@
 [submodule "lightscript-parser"]
 	path = lightscript-parser
 	url = https://github.com/wcjohnson/lightscript-parser.git
+[submodule "lightscript-transform"]
+	path = lightscript-transform
+	url = https://github.com/wcjohnson/lightscript-transform.git
