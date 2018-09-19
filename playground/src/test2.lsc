@@ -77,7 +77,7 @@ transformAtom(mtch, path) ->
       )~atNode(node)
 
 transformAtoms(mtch, atomPaths) ->
-  Or([for elem atomPath in atomPaths: mtch~transformAtom(atomPath)])
+  Or([...for elem atomPath in atomPaths: [mtch~transformAtom(atomPath)]])
 
 transformMatchTest(mtch, casePath) ->
   { outerGuard, atoms, binding, assertive, innerGuard } = casePath.node

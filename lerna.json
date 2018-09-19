@@ -5,7 +5,8 @@
     "lightscript-transform",
     "lightscript-parser",
     "lightscript-runtime",
-    "lightscript-preset"
+    "lightscript-preset",
+    "playground"
   ],
   "version": "independent"
 }

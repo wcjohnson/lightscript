@@ -2,9 +2,12 @@
   "name": "playground",
   "private": true,
   "devDependencies": {
-    "@oigroup/babel-preset-lightscript": "2.0.0-beta.9",
-    "@oigroup/lightscript-eslint": "2.0.0-beta.9",
-    "eslint": "^3.19.0",
-    "eslint-plugin-react": "7.0.1"
+    "@lightscript/babel-preset": "4.0.0-alpha.1",
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0"
+  },
+  "scripts": {
+    "build": "babel --source-maps -x \".lsc\",\".lsx\" src --out-dir lib"
   }
 }
