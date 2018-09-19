@@ -6,25 +6,84 @@ LightScript has been rewritten as a Babel 7 plugin.
 
 ### Changes:
 
+- A full Babel 7 build chain is required. Using LightScript 4 with any previous version of Babel will result in an incompatibility error.
 - `@oigroup/babylon-lightscript` is now `@lightscript/parser`
 - `@oigroup/babel-plugin-lightscript` is now `@lightscript/transform`. It is no longer recommended to use this plugin directly; instead use `@lightscript/babel-preset`
 - `@oigroup/babel-preset-lightscript` is now `@lightscript/babel-preset`.
-- `@babel/preset-env` is now a `peerDependency` of `@lightscript/babel-preset` and must be installed alongside it.
+- `@babel/preset-env` is now a `peerDependency` of the preset and the plugin and must be installed alongside either.
+
+## BREAKING CHANGE: Fat arrows in object bodies no longer autobind
+
+Previously, when using a fat arrow with a method in an object body, the method would auto-bind to the object:
+
+```js
+// In LightScript 3.x,
+a = {
+  b() => this
+}
+// compiles to
+const a = {
+  b() { return c; }
+};
+a.b = a.b.bind(a);
+```
+
+In LightScript 4, a fat arrow gives lexical `this` instead:
+
+```js
+// In LightScript 4,
+a = {
+  b() => this
+}
+// compiles to
+const a = {
+  b: () => this
+};
+```
+
+**Note that this change does NOT apply to class bodies**, where fat arrow methods will still auto-bind in the constructor.
+
+### Rationale:
+
+In real-world code, inline object expressions are often used to create nonce objects or to simulate named parameters:
+
+```js
+sub = observable.subscribe({
+  next(x) => this.gotNewValue(x)
+})
+```
+
+In cases like this, lexical `this` is what the programmer wants and auto-binding is a footgun that causes subtle and difficult-to-diagnose errors.
+
+## BREAKING CHANGE: Safe-await arrow `<!-` has been removed
+
+The safe-await arrow syntax (`<!-`), which was deprecated in 3.x, has been removed in 4.0. It can be replaced with an error-coalescing `try`:
+
+```js
+// LightScript 3.x
+f() -/>
+  a <!- fetch()
+
+// Equivalent LightScript 4.0
+f() -/>
+  a = try: <- fetch()
+```
+
+### Rationale:
+
+The `<!-` operator is redundant with the error coalescence capabilities of the enhanced `try` syntax. The `try` syntax is more readable and more familiar to JavaScript programmers.
+
+## LightScript now generates ES2018+ code
+
+Where appropriate, the LightScript compiler will now generate ES2018+ code, including the use of some experimental proposals. As this code does not run in most environments, the LightScript preset has been updated with additional plugins to transpile this code to your target environment.
 
 ### Changes:
 
-#### 1. Fat arrows in objects (but not class bodies) no longer generate bound methods.
-
-#### 2. LightScript now generates ES2018+ code
-
-#### 3. Safe await `<!-` (deprecated in 3.1) has been removed.
-
-#### 4. Changes to NPM package structure
-
-
-
-
-Prior art: SweetJS
+- Optional traversals (`a?.b`, `a?.(b)`, `a?(b)`) now generate ES2018+ optional chains.
+- `@babel/plugin-proposal-optional-chaining` has been added to the preset.
+- `throw` now parses as a `ThrowExpression` where appropriate.
+- `@babel/plugin-proposal-throw-expressions` has been added to the preset.
+- The preset uses the new `@babel/plugin-proposal-decorators` plugin. Options may be passed to this plugin via the `decoratorOpts` config key. By default, the decorators are set to legacy mode (`decoratorOpts: { legacy: true }`) for compatibility with LightScript 3.x. Available options are documented at https://babeljs.io/docs/en/babel-plugin-proposal-decorators
 
 
 # 3.1
