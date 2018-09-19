@@ -28,3 +28,6 @@
 [submodule "lightscript-transform"]
 	path = lightscript-transform
 	url = https://github.com/wcjohnson/lightscript-transform.git
+[submodule "lightscript-preset"]
+	path = lightscript-preset
+	url = https://github.com/wcjohnson/lightscript-preset.git
