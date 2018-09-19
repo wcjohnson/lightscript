@@ -1,5 +1,16 @@
 # 4.0
 
+## Babel 7
+
+LightScript has been rewritten as a Babel 7 plugin.
+
+### Changes:
+
+- `@oigroup/babylon-lightscript` is now `@lightscript/parser`
+- `@oigroup/babel-plugin-lightscript` is now `@lightscript/transform`. It is no longer recommended to use this plugin directly; instead use `@lightscript/babel-preset`
+- `@oigroup/babel-preset-lightscript` is now `@lightscript/babel-preset`.
+- `@babel/preset-env` is now a `peerDependency` of `@lightscript/babel-preset` and must be installed alongside it.
+
 ### Changes:
 
 #### 1. Fat arrows in objects (but not class bodies) no longer generate bound methods.
@@ -8,7 +19,9 @@
 
 #### 3. Safe await `<!-` (deprecated in 3.1) has been removed.
 
-#### 4. `'lang lightscript'` configuration directive style
+#### 4. Changes to NPM package structure
+
+
 
 
 Prior art: SweetJS
