@@ -1,9 +1,6 @@
 [submodule "babel-plugin-lightscript"]
 	path = babel-plugin-lightscript
 	url = https://github.com/wcjohnson/babel-plugin-lightscript.git
-[submodule "babylon-lightscript"]
-	path = babylon-lightscript
-	url = https://github.com/wcjohnson/babylon-lightscript.git
 [submodule "lightscript-eslint"]
 	path = lightscript-eslint
 	url = https://github.com/wcjohnson/lightscript-eslint.git
