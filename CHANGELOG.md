@@ -1,3 +1,19 @@
+# 4.0
+
+### Changes:
+
+#### 1. Fat arrows in objects (but not class bodies) no longer generate bound methods.
+
+#### 2. LightScript now generates ES2018+ code
+
+#### 3. Safe await `<!-` (deprecated in 3.1) has been removed.
+
+#### 4. `'lang lightscript'` configuration directive style
+
+
+Prior art: SweetJS
+
+
 # 3.1
 
 ## Enhanced error handling

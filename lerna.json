@@ -1,13 +1,11 @@
 {
-  "lerna": "2.0.0-rc.5",
+  "lerna": "2.11.0",
+  "npmClient": "yarn",
   "packages": [
-    "babel-plugin-lightscript",
-    "babel-preset-lightscript",
-    "babylon-lightscript",
+    "lightscript-transform",
+    "lightscript-parser",
     "lightscript-runtime",
-    "lightscript-eslint",
-    "ast-loc-utils",
-    "playground"
+    "lightscript-preset"
   ],
   "version": "independent"
 }
