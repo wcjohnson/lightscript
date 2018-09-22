@@ -60,7 +60,9 @@ inquirer.prompt([{type: 'confirm', default: false, name: 'go', message: 'Proceed
 .then( answers => {
   if (!answers.go) throw new Error("User aborted release")
 
-  scoped(packageList, `run --parallel preversion`)
+  scoped(packageList, `run --parallel clean`)
+  scoped(packageList, `run --parallel build`)
+  scoped(packageList, `run --parallel test:only`)
 
   //////////////////////// Version bump
   // allow user intervention on version numbers for each package
@@ -75,7 +77,7 @@ inquirer.prompt([{type: 'confirm', default: false, name: 'go', message: 'Proceed
 
   //////////////////////// Tag, Publish and push submodules
   updatedPackages.forEach(package => {
-    scopedExec([package.name], `git commit -am "chore: publish ${package.name}@${package.version}"`)
+    scopedExec([package.name], `git commit -am "chore(publish): publish ${package.name}@${package.version}"`)
     scopedExec([package.name], `git tag ${package.name}@${package.version} -m ${package.name}@${package.version}`)
   })
   const updatedPackageList = updatedPackages.map(x => x.name)
@@ -95,7 +97,7 @@ inquirer.prompt([{type: 'confirm', default: false, name: 'go', message: 'Proceed
   const updatedPackageDirs = updatedPackages.map(x => x.path)
   run(`git add ${updatedPackageDirs.join(' ')}`)
 
-  commitArgs = ['commit', '-m', 'Publish', '-m', 'Publish to NPM:']
+  commitArgs = ['commit', '-m', 'chore(publish): publish packages', '-m', 'Publish to NPM:']
   updatedPackages.forEach(info => {
     commitArgs.push('-m', `* ${info.name} v${info.version}`)
   })
