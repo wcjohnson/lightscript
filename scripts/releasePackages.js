@@ -1,6 +1,7 @@
-const { run, runArgs, lernaScopedCommand, lernaScopedCapture } = require('./run')
+const { run, runArgs, scoped, scopedExec, scopedRun } = require('./run')
 const path = require('path')
 const inquirer = require('inquirer')
+const semver = require('semver')
 
 // check that we're not running through `yarn`,
 // which breaks because `npm whoami` returns nil
@@ -12,22 +13,31 @@ try {
 }
 
 const packageList = process.argv.slice(2)
+if (packageList[0] === "all") {
+  const pkgsRaw = JSON.parse(capture("yarn run -s lerna ls --json").trim())
+  packageList = []
+  pkgsRaw.forEach((entry) => packageList.push(entry.name))
+}
+console.log("Releasing:", packageList)
+
 const packages = packageList.map(packageName => {
   // Absolute path
-  const abs = lernaScopedCapture([packageName], 'exec -- pwd').trim()
+  const abs = scopedExec([packageName], 'pwd').trim()
+  // Prior version
+  const priorVersion = scopedExec([packageName], 'cat package.json | sed -nE "s/.*\\"version\\": ?\\"(.*)\\".*/\\1/p"').trim()
   // git status
-  const gitStatus = lernaScopedCapture([packageName], 'exec -- git status --porcelain').trim()
+  const gitStatus = scopedExec([packageName], 'git status --porcelain').trim()
   // git branch
-  const gitBranch = lernaScopedCapture([packageName], 'exec -- git rev-parse --abbrev-ref HEAD').trim()
+  const gitBranch = scopedExec([packageName], 'git rev-parse --abbrev-ref HEAD').trim()
   return {
     name: packageName,
-    path: path.relative(path.join(__dirname, '..'), abs),
+    absolutePath: abs,
+    priorVersion: priorVersion,
     gitStatus: gitStatus,
-    gitBranch: gitBranch
+    gitBranch: gitBranch,
+    path: path.relative(path.join(__dirname, '..'), abs)
   }
 })
-
-const packageDirs = packages.map(package => package.path)
 
 /////////////////// Health check
 console.log("Preflight check:")
@@ -35,6 +45,7 @@ packages.forEach(package => {
   console.log("----------------------------------")
   console.log("Package: ", package.name)
   console.log("Path: ", package.path)
+  console.log("Current version: ", package.priorVersion)
   console.log("Branch: ", package.gitBranch)
   console.log("----------------------------------")
   if (package.gitStatus.length > 0) {
@@ -49,28 +60,43 @@ inquirer.prompt([{type: 'confirm', default: false, name: 'go', message: 'Proceed
 .then( answers => {
   if (!answers.go) throw new Error("User aborted release")
 
-  lernaScopedCommand(packageList, `run preversion`)
+  scoped(packageList, `run --parallel preversion`)
 
   //////////////////////// Version bump
   // allow user intervention on version numbers for each package
-  lernaScopedCommand(packageList, `publish --skip-npm --skip-git --exact`)
+  scopedRun(packageList, `publish --skip-npm --skip-git --exact`)
 
   // read version numbers and push git tags
   packages.forEach(package => {
-    package.version = lernaScopedCapture([package.name], 'exec -- cat package.json | sed -nE "s/.*\\"version\\": ?\\"(.*)\\".*/\\1/p"').trim()
-    lernaScopedCommand([package.name], `exec -- git commit -am ${package.name}@${package.version}`)
-    lernaScopedCommand([package.name], `exec -- git tag ${package.name}@${package.version} -m ${package.name}@${package.version}`)
+    package.version = scopedExec([package.name], 'cat package.json | sed -nE "s/.*\\"version\\": ?\\"(.*)\\".*/\\1/p"').trim()
   })
 
-  //////////////////////// Publish and push tags
-  lernaScopedCommand(packageList, `exec -- npm publish`)
-  lernaScopedCommand(packageList, `exec -- git push && git push --tags`)
+  const updatedPackages = packages.filter((pkg) => pkg.version !== pkg.priorVersion)
+
+  //////////////////////// Tag, Publish and push submodules
+  updatedPackages.forEach(package => {
+    scopedExec([package.name], `git commit -am "chore: publish ${package.name}@${package.version}"`)
+    scopedExec([package.name], `git tag ${package.name}@${package.version} -m ${package.name}@${package.version}`)
+  })
+  const updatedPackageList = updatedPackages.map(x => x.name)
+
+  updatedPackages.forEach(package => {
+    if (semver.prerelease(package.version)) {
+      scopedExec([package.name], `npm publish --tag next`)
+    } else {
+      scopedExec([package.name], `npm publish --tag latest`)
+    }
+  })
+
+  scopedExec(updatedPackageList, `npm publish`)
+  scopedExec(updatedPackageList, `git push && git push --tags`)
 
   //////////////////////// Push monorepo updates
-  run(`git add ${packageDirs.join(' ')}`)
+  const updatedPackageDirs = updatedPackages.map(x => x.path)
+  run(`git add ${updatedPackageDirs.join(' ')}`)
 
   commitArgs = ['commit', '-m', 'Publish', '-m', 'Publish to NPM:']
-  packages.forEach(info => {
+  updatedPackages.forEach(info => {
     commitArgs.push('-m', `* ${info.name} v${info.version}`)
   })
   runArgs('git', commitArgs)

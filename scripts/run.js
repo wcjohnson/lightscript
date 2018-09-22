@@ -22,26 +22,41 @@ const runArgs = (cmd, args, opts = {}) => {
 }
 module.exports.runArgs = runArgs
 
-const capture = (str) => {
-  console.log(chalk.white.bgBlack(str))
-  const [cmd, ...args] = str.split(' ')
-  const { status, stdout } = spawnSync(cmd, args, { encoding: 'utf8' })
-  if (status !== 0) process.exit()
+const capture = (str, ignoreErr) => {
+  let cmd, args
+
+  if(Array.isArray(str)) {
+    [cmd, ...args] = str
+  } else {
+    [cmd, ...args] = str.split(' ')
+  }
+
+  console.log(chalk.white.bgBlack(cmd + ' ' + args.join(' ')))
+
+  const { status, stdout, stderr } = spawnSync(cmd, args, { encoding: 'utf8' })
+  if (!ignoreErr && (status !== 0)) {
+    console.log(chalk.red.bgBlack(`Subprocess exited with code ${status}: ${stderr}`))
+    process.exit(status)
+  }
   return stdout
 }
 
 module.exports.capture = capture
 
-const lernaExec = (cmd, opts) => run(`lerna exec -- ${cmd}`, opts)
-const lernaScopedCommand = (packages, cmd, opts) => {
-  const scopes = packages.reduce( (ps, p) => ps + `--scope ${p} `, '' )
-  run(`lerna ${scopes}${cmd}`, opts)
-}
-const lernaScopedCapture = (packages, cmd, opts) => {
+module.exports.scoped = function scoped(packages, cmd) {
   const scopes = packages.reduce((ps, p) => ps + `--scope ${p} `, '')
-  return capture(`lerna ${scopes}${cmd}`)
+  return capture(`yarn run -s lerna ${scopes}${cmd}`)
 }
 
-module.exports.lernaExec = lernaExec;
-module.exports.lernaScopedCommand = lernaScopedCommand;
-module.exports.lernaScopedCapture = lernaScopedCapture;
+module.exports.scopedExec = function scopedExec(packages, cmd) {
+  const args = ['yarn', 'run', '-s', 'lerna']
+  packages.forEach((p) => { args.push('--scope'); args.push(p) })
+  args.push('exec')
+  args.push(cmd)
+  return capture(args)
+}
+
+module.exports.scopedRun = function scopedRun(packages, cmd) {
+  const scopes = packages.reduce((ps, p) => ps + `--scope ${p} `, '')
+  return run(`yarn run -s lerna ${scopes}${cmd}`)
+}
