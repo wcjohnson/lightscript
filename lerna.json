@@ -6,6 +6,7 @@
     "lightscript-parser",
     "lightscript-runtime",
     "lightscript-preset",
+    "lightscript-eslint",
     "playground"
   ],
   "version": "independent"
