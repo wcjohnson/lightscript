@@ -89,8 +89,6 @@ inquirer.prompt([{type: 'confirm', default: false, name: 'go', message: 'Proceed
       scopedExec([package.name], `npm publish --tag latest`)
     }
   })
-
-  scopedExec(updatedPackageList, `npm publish`)
   scopedExec(updatedPackageList, `git push && git push --tags`)
 
   //////////////////////// Push monorepo updates
