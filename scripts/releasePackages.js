@@ -84,9 +84,10 @@ inquirer.prompt([{type: 'confirm', default: false, name: 'go', message: 'Proceed
 
   updatedPackages.forEach(package => {
     if (semver.prerelease(package.version)) {
-      scopedExec([package.name], `npm publish --tag next`)
+      // Must run npm in the cwd of the package
+      run(`npm publish --tag next`, { cwd: package.absolutePath })
     } else {
-      scopedExec([package.name], `npm publish --tag latest`)
+      run(`npm publish --tag latest`, { cwd: package.absolutePath })
     }
   })
   scopedExec(updatedPackageList, `git push && git push --tags`)
