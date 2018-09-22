@@ -55,23 +55,74 @@ sub = observable.subscribe({
 
 In cases like this, lexical `this` is what the programmer wants and auto-binding is a footgun that causes subtle and difficult-to-diagnose errors.
 
-## BREAKING CHANGE: Safe-await arrow `<!-` has been removed
+## `try` changes
 
-The safe-await arrow syntax (`<!-`), which was deprecated in 3.x, has been removed in 4.0. It can be replaced with an error-coalescing `try`:
+The `try` syntax has been stabilized for 4.0:
+
+### Changes:
+
+- `enhancedTry` compiler flag removed.
+- `try` can be used as an expression, as documented in 3.1 changelog.
+- `try` can be used without `catch`, in which case errors are coalesced:
+```js
+x = try: f()
+// compiles to
+const x = () => {
+  try {
+    return f();
+  } catch (_err) {
+    return _err;
+  }
+})();
+```
+- The colon-less coalescing `try` syntax added in 3.1 has been removed.
+
+### Rationale:
+
+Making `try` usable as an expression without breaking changes to its syntax is consistent with LightScript's handling of other constructs, e.g. `if` expressions. The increased parsing tolerance for `try` added in 3.1, as well as its ability to be used as an expression, are non-breaking changes consistent with this rule.
+
+The colon-less `try` syntax created confusion between `try` and `try:` and was not adding anything beyond what using `try:` as an expression already brought, so it has been removed.
+
+## Safe-await arrow `<!-` now compiles like `try:`
+
+The safe-await arrow syntax (`<!-`) is no longer deprecated and will compile into code equivalent to an error-coalescing `try:` block.
 
 ```js
-// LightScript 3.x
 f() -/>
   a <!- fetch()
-
-// Equivalent LightScript 4.0
+// Is equivalent to
 f() -/>
   a = try: <- fetch()
 ```
 
+## `safeCall` compiler flag removed
+
+As safe calls are part of the ES2018+ optional-chaining proposal, they are now permanently enabled in LightScript. In the (unlikely) event of further changes to the proposal, this will be revisited.
+
+## BREAKING CHANGE: Existential expressions removed
+
+### Changes:
+
+- `existential` compiler flag removed.
+- Existential expressions `a?` will no longer compile.
+- Recommended replacement for the time being is `~looseNotEq(null)`:
+```js
+a?
+// should be replaced with
+a~looseNotEq(null)
+```
+
 ### Rationale:
 
-The `<!-` operator is redundant with the error coalescence capabilities of the enhanced `try` syntax. The `try` syntax is more readable and more familiar to JavaScript programmers.
+Due to the massive overload of the `?` token in JavaScript, including several upcoming TC39 proposals, it's very difficult to overload the token further without breaking parsing.
+
+## Subscript indentation no longer enforced.
+
+Subscript indentation is now unenforced by default. `noEnforcedSubscriptIndentation` compiler flag removed. Of course, you are free to continue to use indented (or non-indented) style for subscripts as you choose.
+
+### Rationale:
+
+This was a case of the compiler forcing style on programmers when it was not necessary to do so.
 
 ## LightScript now generates ES2018+ code
 
