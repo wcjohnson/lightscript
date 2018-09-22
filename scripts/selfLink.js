@@ -2,9 +2,7 @@
 
 const run = require('./run')
 
-process.argv.slice(2).forEach(target => {
-  run(`mkdir -p ${target}/node_modules`)
-  run(`touch ${target}/node_modules/${target}`)
-  run(`rm ${target}/node_modules/${target}`)
-  run(`ln -s ../../${target} ${target}/node_modules/${target}`)
-})
+run(`mkdir -p lightscript-eslint/node_modules/@lightscript`)
+run(`touch lightscript-eslint/node_modules/@lightscript/eslint-plugin`)
+run(`rm lightscript-eslint/node_modules/@lightscript/eslint-plugin`)
+run(`ln -s ../.. lightscript-eslint/node_modules/@lightscript/eslint-plugin`)
