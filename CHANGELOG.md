@@ -149,6 +149,18 @@ maximum control over your build chain. JSX has a number of user configurable
 options (pragmas, etc.) which are now left up to you rather than being fixed
 by the preset.
 
+## `if` whiteblock versus type annotation ambiguity squashed
+
+The only documented ambiguity in the grammar has been eliminated for 4.0. The code
+```js
+if fn(): x => 4
+```
+now correctly compiles as an `if` whose consequent is an arrow function expression `x => 4`.
+In general, all ambiguities of this class should now be resolved in the most intuitive way.
+
+(The technical rule is that type-annotated functions are not allowed at the top level of
+`if` conditions and other paren-free contexts, but we hope you won't have to remember all that.)
+
 # 3.1
 
 ## Enhanced error handling
