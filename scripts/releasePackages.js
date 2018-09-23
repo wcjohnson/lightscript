@@ -83,8 +83,10 @@ inquirer.prompt([{type: 'confirm', default: false, name: 'go', message: 'Proceed
   const updatedPackageList = updatedPackages.map(x => x.name)
 
   updatedPackages.forEach(package => {
-    if (semver.prerelease(package.version)) {
-      // Must run npm in the cwd of the package
+    // Must run npm in the cwd of the package
+    if (process.env.RELEASE_TAG) {
+      run(`npm publish --tag ${process.env.RELEASE_TAG}`, { cwd: package.absolutePath })
+    } else if (semver.prerelease(package.version)) {
       run(`npm publish --tag next`, { cwd: package.absolutePath })
     } else {
       run(`npm publish --tag latest`, { cwd: package.absolutePath })
