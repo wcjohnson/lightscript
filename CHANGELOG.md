@@ -136,6 +136,18 @@ Where appropriate, the LightScript compiler will now generate ES2018+ code, incl
 - `@babel/plugin-proposal-throw-expressions` has been added to the preset.
 - The preset uses the new `@babel/plugin-proposal-decorators` plugin. Options may be passed to this plugin via the `decoratorOpts` config key. By default, the decorators are set to legacy mode (`decoratorOpts: { legacy: true }`) for compatibility with LightScript 3.x. Available options are documented at https://babeljs.io/docs/en/babel-plugin-proposal-decorators
 
+## BREAKING CHANGE: `@lightscript/babel-preset` no longer transforms JSX.
+
+JSX will no longer be transformed by the LightScript preset. Please add
+`@babel/preset-react` after the LightScript preset in your build chain in order
+to transform JSX. (JSX is, of course, still fully supported in the language, but it must now be transformed by a separate plugin or preset.)
+
+### Rationale:
+
+We are trying to streamline the preset as much as possible in order to give you
+maximum control over your build chain. JSX has a number of user configurable
+options (pragmas, etc.) which are now left up to you rather than being fixed
+by the preset.
 
 # 3.1
 
