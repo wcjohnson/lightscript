@@ -161,6 +161,12 @@ In general, all ambiguities of this class should now be resolved in the most int
 (The technical rule is that type-annotated functions are not allowed at the top level of
 `if` conditions and other paren-free contexts, but we hope you won't have to remember all that.)
 
+## Miscellaneous changes
+
+- More tolerant parsing for tilde-call callees. Calling IIFEs like `a~(b->c)()` now works.
+- BREAKING CHANGE: Implicit returns are not added to `finally` blocks in `try` constructs.
+- Fixed all outstanding parser and compiler bugs.
+
 # 3.1
 
 ## Enhanced error handling
