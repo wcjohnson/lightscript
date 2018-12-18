@@ -27,6 +27,7 @@
     "release-core-packages": "node ./scripts/releasePackages.js @lightscript/parser @lightscript/transform @lightscript/babel-preset",
     "release-linter": "node ./scripts/releasePackages.js @lightscript/eslint-plugin",
     "release-all": "node ./scripts/releasePackages.js @lightscript/parser @lightscript/transform @lightscript/babel-preset @lightscript/eslint-plugin",
-    "release-selfhost": "node ./scripts/releasePackages.js @oigroup/babylon-lightscript-self-host @oigroup/babel-plugin-lightscript-self-host @oigroup/babel-preset-lightscript-self-host @oigroup/lightscript-eslint-self-host"
+    "release-selfhost": "node ./scripts/releasePackages.js @oigroup/babylon-lightscript-self-host @oigroup/babel-plugin-lightscript-self-host @oigroup/babel-preset-lightscript-self-host @oigroup/lightscript-eslint-self-host",
+    "alpha-release-all-latest": "RELEASE_TAG=latest node ./scripts/releasePackages.js @lightscript/parser @lightscript/transform @lightscript/babel-preset @lightscript/eslint-plugin"
   }
 }
