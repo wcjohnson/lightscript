@@ -7,6 +7,7 @@
     "lightscript-runtime",
     "lightscript-preset",
     "lightscript-eslint",
+    "lightscript-tooling-tests",
     "playground"
   ],
   "version": "independent"
