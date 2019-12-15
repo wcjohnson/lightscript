@@ -23,7 +23,7 @@
     "self-link": "node ./scripts/selfLink.js babel-plugin-lightscript babel-preset-lightscript",
     "clean": "lerna clean --yes",
     "build": "lerna run --parallel build",
-    "test": "lerna run test",
+    "test": "lerna run test:only",
     "release-core-packages": "node ./scripts/releasePackages.js @lightscript/parser @lightscript/transform @lightscript/babel-preset",
     "release-linter": "node ./scripts/releasePackages.js @lightscript/eslint-plugin",
     "release-all": "node ./scripts/releasePackages.js @lightscript/parser @lightscript/transform @lightscript/babel-preset @lightscript/eslint-plugin",
