@@ -2,8 +2,8 @@
   "name": "playground",
   "private": true,
   "devDependencies": {
-    "@lightscript/babel-preset": "4.0.0-alpha.1",
-    "@lightscript/eslint-plugin": "4.0.0-alpha.1",
+    "@lightscript/babel-preset": "4.0.0-alpha.25",
+    "@lightscript/eslint-plugin": "4.0.0-alpha.25",
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
