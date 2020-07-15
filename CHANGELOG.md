@@ -23,7 +23,7 @@ a = {
 }
 // compiles to
 const a = {
-  b() { return c; }
+  b() { return this; }
 };
 a.b = a.b.bind(a);
 ```
@@ -83,9 +83,11 @@ Making `try` usable as an expression without breaking changes to its syntax is c
 
 The colon-less `try` syntax created confusion between `try` and `try:` and was not adding anything beyond what using `try:` as an expression already brought, so it has been removed.
 
-## Safe-await arrow `<!-` now compiles like `try:`
+## Safe-await arrow `<!-` changes:
 
-The safe-await arrow syntax (`<!-`) is no longer deprecated and will compile into code equivalent to an error-coalescing `try:` block.
+The safe-await arrow syntax (`<!-`) is no longer deprecated.
+
+Vanilla safe await arrows will compile into code equivalent to an error-coalescing `try:` block.
 
 ```js
 f() -/>
@@ -93,6 +95,16 @@ f() -/>
 // Is equivalent to
 f() -/>
   a = try: <- fetch()
+```
+
+In addition, a new syntax for safe arrows is available. Previously, destructuring the return from a safe arrow was banned by the parser. Now it is permitted in one special case. If the left hand side is an array pattern consisting of two elements:
+```js
+g() -/>
+  [result, err] <!- f()
+```
+`[result, err]` will be `[f(), undefined]` if `f()` succeeds, or `[undefined, err]` if `f()` throws err:
+```js
+
 ```
 
 ## `safeCall` compiler flag removed
@@ -161,10 +173,26 @@ In general, all ambiguities of this class should now be resolved in the most int
 (The technical rule is that type-annotated functions are not allowed at the top level of
 `if` conditions and other paren-free contexts, but we hope you won't have to remember all that.)
 
+## BREAKING CHANGE: Implicit imports and hidden globals are deprecated
+
+Code which would generate implicit imports, as well as global symbols introduced by the compiler, are now considered deprecated.
+
+### Changes:
+
+- The compiler option `stdlib.lodash` is now set to `false` by default. This means the compiler will no longer implicitly import lodash methods when they are referenced globally. The old behavior may be restored by setting `stdlib.lodash` to `true` in compiler options. This option will be removed completely in 5.0. Users of `lodash` should import the symbols in the standard way.
+
+
+### Rationale:
+
+We are trying to move the language towards increased explicitness and static analyzability. In addition, the ecosystem is moving towards ES modules as the general library format.
+
+Hidden global symbols that can refer to libraries that are not actually imported by the current module are ripe for footguns and breakage.
+
 ## Miscellaneous changes
 
 - More tolerant parsing for tilde-call callees. Calling IIFEs like `a~(b->c)()` now works.
 - BREAKING CHANGE: Implicit returns are not added to `finally` blocks in `try` constructs.
+- BREAKING CHANGE: Implicit returns are not added to `yield` expressions in generator functions.
 - Fixed all outstanding parser and compiler bugs.
 
 # 3.1
